@@ -16,13 +16,8 @@
 
 package com.android.camera;
 
-import com.android.gallery.R;
-
-import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -35,11 +30,7 @@ import android.os.ParcelFileDescriptor;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
-
 import com.android.camera.gallery.IImage;
-
 import java.io.Closeable;
 import java.io.FileDescriptor;
 import java.io.IOException;
@@ -357,6 +348,7 @@ public class Util {
 
     public static boolean equals(String a, String b) {
         // return true if both string are null or the content equals
+        //noinspection StringEquality
         return a == b || a.equals(b);
     }
 
@@ -431,7 +423,7 @@ public class Util {
 
     // Returns Options that set the puregeable flag for Bitmap decode.
     public static BitmapFactory.Options createNativeAllocOptions() {
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        return options;
+        return new BitmapFactory.Options();
+
     }
 }

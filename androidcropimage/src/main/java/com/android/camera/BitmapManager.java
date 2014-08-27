@@ -95,15 +95,11 @@ public class BitmapManager {
      * The following three methods are used to keep track of which thread
      * is being disabled for bitmap decoding.
      */
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public synchronized boolean canThreadDecoding(Thread t) {
         ThreadStatus status = mThreadStatus.get(t);
-        if (status == null) {
-            // allow decoding by default
-            return true;
-        }
+        return status == null || (status.mState != State.CANCEL);
 
-        boolean result = (status.mState != State.CANCEL);
-        return result;
     }
 
     public synchronized void allowThreadDecoding(Thread t) {

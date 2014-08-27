@@ -11,6 +11,7 @@
         <LinearLayout
             android:id="@+id/top_crop"
             android:layout_width="match_parent"
+            android:orientation="horizontal"
             android:layout_height="100dp"
             android:layout_alignParentTop="true"
             android:alpha="0.5"
@@ -20,6 +21,7 @@
         <LinearLayout
             android:id="@+id/left_crop"
             android:layout_width="100dp"
+            android:orientation="vertical"
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
             android:alpha="0.5"
@@ -29,6 +31,7 @@
         <LinearLayout
             android:id="@+id/right_crop"
             android:layout_width="100dp"
+            android:orientation="vertical"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:alpha="0.5"
@@ -38,6 +41,7 @@
         <LinearLayout
             android:id="@+id/bottom_crop"
             android:layout_width="match_parent"
+            android:orientation="horizontal"
             android:layout_height="100dp"
             android:layout_alignParentBottom="true"
             android:alpha="0.5"

@@ -16,4 +16,6 @@
     <string name="base_directions">Select from one to three Cues.</string>
     <string name="build_choices">Build Choices</string>
     <string name="clear_choices">Clear Choices</string>
+
+    <string name="button_id">button</string>
 </resources>

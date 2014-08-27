@@ -38,7 +38,7 @@ class HighlightView {
     private static final String TAG = "HighlightView";
     View mContext;  // The View displaying the image.
 
-    public static final int GROW_NONE        = (1 << 0);
+    public static final int GROW_NONE        = (1);
     public static final int GROW_LEFT_EDGE   = (1 << 1);
     public static final int GROW_RIGHT_EDGE  = (1 << 2);
     public static final int GROW_TOP_EDGE    = (1 << 3);
@@ -242,6 +242,7 @@ class HighlightView {
     void handleMotion(int edge, float dx, float dy) {
         Rect r = computeLayout();
         if (edge == GROW_NONE) {
+            //noinspection UnnecessaryReturnStatement
             return;
         } else if (edge == MOVE) {
             // Convert to image space before sending to moveBy().
@@ -300,15 +301,15 @@ class HighlightView {
         // the cropping rectangle.
         RectF r = new RectF(mCropRect);
         if (dx > 0F && r.width() + 2 * dx > mImageRect.width()) {
-            float adjustment = (mImageRect.width() - r.width()) / 2F;
-            dx = adjustment;
+            dx = (mImageRect.width() - r.width()) / 2F;
+
             if (mMaintainAspectRatio) {
                 dy = dx / mInitialAspectRatio;
             }
         }
         if (dy > 0F && r.height() + 2 * dy > mImageRect.height()) {
-            float adjustment = (mImageRect.height() - r.height()) / 2F;
-            dy = adjustment;
+            dy = (mImageRect.height() - r.height()) / 2F;
+
             if (mMaintainAspectRatio) {
                 dx = dy * mInitialAspectRatio;
             }

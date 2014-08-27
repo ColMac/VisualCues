@@ -133,7 +133,8 @@
                 android:layout_height="wrap_content"
                 android:background="@drawable/custom_button"
                 android:padding="5dp"
-                android:text=" Delete Cue " />
+                android:text=" Delete Cue "
+                tools:ignore="ButtonStyle" />
 
             <Button
                 android:id="@+id/finished"

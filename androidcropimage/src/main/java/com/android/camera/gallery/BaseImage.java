@@ -79,8 +79,7 @@ public abstract class BaseImage implements IImage {
 
     @Override
     public boolean equals(Object other) {
-        if (other == null || !(other instanceof Image)) return false;
-        return mUri.equals(((Image) other).mUri);
+        return !(other == null || !(other instanceof Image)) && mUri.equals(((Image) other).mUri);
     }
 
     @Override
@@ -110,8 +109,8 @@ public abstract class BaseImage implements IImage {
 
     public InputStream fullSizeImageData() {
         try {
-            InputStream input = mContentResolver.openInputStream(mUri);
-            return input;
+            return mContentResolver.openInputStream(mUri);
+
         } catch (IOException ex) {
             return null;
         }
@@ -178,7 +177,7 @@ public abstract class BaseImage implements IImage {
     }
 
     public Bitmap miniThumbBitmap() {
-        Bitmap b = null;
+        Bitmap b;
         try {
             long id = mId;
             b = Images.Thumbnails.getThumbnail(mContentResolver, id,

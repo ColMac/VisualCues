@@ -2,6 +2,8 @@ package com.visualcues;
 
 import java.io.File;
 import java.util.List;
+
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -33,28 +35,20 @@ public class CameraManager extends Activity implements SurfaceHolder.Callback {
 	private static Camera camera = null;
 	private boolean cameraConfigured = false;
 	private static boolean inPreview = false;
-	private static String file_path;
-	private static String fName;
-	private final String subDir = "/vq_images/";
-	private static Bitmap rotated = null;
-	private SurfaceView surfaceView = null;
-	private SurfaceHolder surfaceHolder = null;
-	private LayoutInflater inflater;
-	private Button takePicture;
-	private Intent mainIntent;
-	private CameraInfo cameraInfo;
+    private static String fName;
+    private static Bitmap rotated = null;
+    private SurfaceHolder surfaceHolder = null;
+    private CameraInfo cameraInfo;
 	private Context cContext;
-	private View overView = null;
-	private Utilities utils;
+    private Utilities utils;
 	@SuppressWarnings("unused")
 	private String TAG = "CameraManager ln: ";
-	private int result, degrees;
-	private File dir = null;
-	SavePhotoTask sTask = null;
+	private int result;
+    SavePhotoTask sTask = null;
 	LinearLayout rightCrop, leftCrop, topCrop, bottomCrop;
-	private int size;
 
-	public void onCreate(Bundle savedInstanceState) {
+    @SuppressLint("InflateParams")
+    public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		getWindow().setFormat(PixelFormat.TRANSLUCENT);
@@ -64,12 +58,12 @@ public class CameraManager extends Activity implements SurfaceHolder.Callback {
 
 		setContentView(R.layout.camera);
 
-		surfaceView = (SurfaceView) findViewById(R.id.surface);
+        SurfaceView surfaceView = (SurfaceView) findViewById(R.id.surface);
 		surfaceHolder = surfaceView.getHolder();
 		surfaceHolder.addCallback(this);
 
-		inflater = LayoutInflater.from(this);
-		overView = inflater.inflate(R.layout.cameraoverlay, null);
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View overView = inflater.inflate(R.layout.cameraoverlay, null);
 
 		this.addContentView(overView, new LayoutParams(
 				LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
@@ -82,7 +76,8 @@ public class CameraManager extends Activity implements SurfaceHolder.Callback {
 		topCrop = (LinearLayout) overView.findViewById(R.id.top_crop);
 		bottomCrop = (LinearLayout) overView.findViewById(R.id.bottom_crop);
 
-		if (getResources().getConfiguration().orientation == 1 /* portrait */) {
+        int size;
+        if (getResources().getConfiguration().orientation == 1 /* portrait */) {
 
 			rightCrop.setVisibility(LinearLayout.GONE);
 			leftCrop.setVisibility(LinearLayout.GONE);
@@ -116,19 +111,19 @@ public class CameraManager extends Activity implements SurfaceHolder.Callback {
 		LayoutParams rightParams = rightCrop.getLayoutParams();
 		rightParams.width = size;
 
-		takePicture = (Button) findViewById(R.id.snap_button);
+        Button takePicture = (Button) findViewById(R.id.snap_button);
 
-		mainIntent = getIntent();
+        Intent mainIntent = getIntent();
 		setFileName(mainIntent.getStringExtra("file_name"));
 
 		takePicture.setOnClickListener(new OnClickListener() {
 
-			@Override
-			public void onClick(View view) {
-				camera.takePicture(null, null, photoCallback);
+            @Override
+            public void onClick(View view) {
+                camera.takePicture(null, null, photoCallback);
 
-			}
-		});
+            }
+        });
 	}
 
 	/**
@@ -186,7 +181,7 @@ public class CameraManager extends Activity implements SurfaceHolder.Callback {
 					.getSystemService(Context.WINDOW_SERVICE);
 			int rotation = winManager.getDefaultDisplay().getRotation();
 
-			degrees = 0;
+            int degrees = 0;
 
 			switch (rotation) {
 
@@ -236,7 +231,7 @@ public class CameraManager extends Activity implements SurfaceHolder.Callback {
 	 * @return
 	 */
 	public Camera.Size getMediumPictureSize(Camera.Parameters parameters) {
-		Camera.Size result = null;
+		Camera.Size result;
 
 		List<Camera.Size> params = parameters.getSupportedPictureSizes();
 		result = params.get(params.size() / 2);
@@ -348,8 +343,9 @@ public class CameraManager extends Activity implements SurfaceHolder.Callback {
 
 			utils = new Utilities(cContext);
 
-			file_path = getFilesDir() + subDir;
-			dir = new File(file_path);
+            String subDir = "/vq_images/";
+            String file_path = getFilesDir() + subDir;
+            File dir = new File(file_path);
 			if (!dir.exists()) {
 				dir.mkdirs();
 			}

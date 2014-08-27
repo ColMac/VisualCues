@@ -2,8 +2,7 @@ package com.visualcues;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Locale;
-
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +10,7 @@ import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.net.Uri;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -37,10 +37,9 @@ public class ImageAdapter extends ArrayAdapter<File> {
 	Utilities utils;
 	private LayoutInflater mInflater;
 	ViewHolder holder;
-	private String cueName;
-	private ArrayList<String> cacheList;
+    private ArrayList<String> cacheList;
 	private LinearLayout chosenCues, spaceHolder;
-	@SuppressWarnings("unused")
+	@SuppressWarnings({"unused", "FieldCanBeLocal"})
 	private String TAG = "ImageAdapter ";
 
 	public ImageAdapter(Context context, int textViewResourceId,
@@ -88,13 +87,12 @@ public class ImageAdapter extends ArrayAdapter<File> {
 		return position;
 	}
 
-	@Override
+	@SuppressLint("InflateParams")
+    @Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 
-		int realPosition = position;
-
-		cueName = new DatabaseHelper(mContext).getText(fList.get(realPosition)
-				.toString());
+        String cueName = new DatabaseHelper(mContext).getText(fList.get(position)
+                .toString());
 
 		if (convertView == null) {
 			holder = new ViewHolder();
@@ -125,11 +123,11 @@ public class ImageAdapter extends ArrayAdapter<File> {
 
 		if (flag) {
 
-			holder.imageview.setId(realPosition);
-			holder.overlay.setId(realPosition);
-			holder.position = realPosition;
+			holder.imageview.setId(position);
+			holder.overlay.setId(position);
+			holder.position = position;
 
-			holder.cueCaption.setText((!cueName.equals("ERROR")?cueName:""));
+			holder.cueCaption.setText((!cueName.equals("ERROR")? cueName :""));
 
 			if (chosenCues != null) {
 				holder.imageview.setOnClickListener(new OnClickListener() {
@@ -254,7 +252,7 @@ public class ImageAdapter extends ArrayAdapter<File> {
 
 			Resources r = mContext.getResources();
 			Drawable[] layers = new Drawable[2];
-			layers[0] = Drawable.createFromPath(fList.get(realPosition)
+			layers[0] = Drawable.createFromPath(fList.get(position)
 					.toString());
 			try {
 				layers[0].setBounds(20, 20, 20, 20);
@@ -263,11 +261,12 @@ public class ImageAdapter extends ArrayAdapter<File> {
 				LayerDrawable layerDrawable = new LayerDrawable(layers);
 				holder.imageview.setImageDrawable(layerDrawable);
 			} catch (NullPointerException e) {
+                Log.d(TAG, e.toString());
 			}
 
 		} else {
 
-			holder.imageview.setImageURI(Uri.fromFile(fList.get(realPosition)));
+			holder.imageview.setImageURI(Uri.fromFile(fList.get(position)));
 		}
 
 		return convertView;

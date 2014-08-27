@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.database.Cursor;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -31,8 +32,10 @@ public class MainActivity extends Activity {
 	private Button setupCues, addPhoto, clearChoices;
 	private GridView photoView;
 	private ArrayList<String> ar_list = new ArrayList<String>();
-	private LinearLayout choiceBox, space_holder, button_holder, base_holder;
-	private Context mContext;
+	private LinearLayout choiceBox;
+    private LinearLayout space_holder;
+    private LinearLayout button_holder;
+    private Context mContext;
 	private ImageAdapter imgAdapter;
 	private ListView categories;
 	private DatabaseHelper dbHelper;
@@ -56,9 +59,7 @@ public class MainActivity extends Activity {
 		categories = (ListView) findViewById(R.id.category_list);
 		space_holder = (LinearLayout) findViewById(R.id.space_holder);
 		button_holder = (LinearLayout) findViewById(R.id.button_holder);
-		base_holder = (LinearLayout) findViewById(R.id.content);
 		noCuesText = (TextView) findViewById(R.id.no_cues_text);
-
 		photoView.setFadingEdgeLength(100);
 		photoView.setVerticalFadingEdgeEnabled(true);
 
@@ -78,14 +79,14 @@ public class MainActivity extends Activity {
 		if (getResources().getConfiguration().orientation == 1 /* portrait */) {
 			
 			photoView.setNumColumns(2);
-			space_holder.setOrientation(1);
-			button_holder.setOrientation(2);
+			space_holder.setOrientation(LinearLayout.VERTICAL);
+			button_holder.setOrientation(LinearLayout.HORIZONTAL);
 
 		} else { /* landscape */
 			
 			photoView.setNumColumns(4);
-			space_holder.setOrientation(2);
-			button_holder.setOrientation(1);
+			space_holder.setOrientation(LinearLayout.HORIZONTAL);
+			button_holder.setOrientation(LinearLayout.VERTICAL);
 		}
 		space_holder.setVisibility(LinearLayout.GONE);
 
@@ -174,7 +175,7 @@ public class MainActivity extends Activity {
 							currentSelection = 0;
 						}
 					} catch(NullPointerException e) {
-						
+						Log.d(TAG, e.toString());
 					}
 				}
 
@@ -189,14 +190,14 @@ public class MainActivity extends Activity {
 		if (newConfig.orientation == 1 /* Portrait */) {
 			
 			photoView.setNumColumns(2);
-			space_holder.setOrientation(1);
-			button_holder.setOrientation(2);
+			space_holder.setOrientation(LinearLayout.VERTICAL);
+			button_holder.setOrientation(LinearLayout.HORIZONTAL);
 			
 		} else if (newConfig.orientation == 2 /* landscape */) {
 			
 			photoView.setNumColumns(4);
-			space_holder.setOrientation(2);
-			button_holder.setOrientation(1);
+			space_holder.setOrientation(LinearLayout.HORIZONTAL);
+			button_holder.setOrientation(LinearLayout.VERTICAL);
 			
 		}
 		super.onConfigurationChanged(newConfig);

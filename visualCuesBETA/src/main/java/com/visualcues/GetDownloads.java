@@ -19,6 +19,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -28,8 +29,7 @@ public class GetDownloads extends Activity {
 
 	private GridView gView;
 	private ArrayList<File> fileArray;
-	private File[] directories;
-	private String fileName = null;
+    private String fileName = null;
 	private ArrayList<File> bmArray;
 	private Utilities utils;
 	private Context context;
@@ -84,7 +84,7 @@ public class GetDownloads extends Activity {
 			String homeDir = Environment.getExternalStoragePublicDirectory(
 					Environment.DIRECTORY_DOWNLOADS).toString();
 			File file = new File(homeDir);
-			directories = file.listFiles();
+            File[] directories = file.listFiles();
 
 
 			fileArray = new ArrayList<File>();
@@ -131,7 +131,7 @@ public class GetDownloads extends Activity {
 					waiting = true;
 					startActivityForResult(cropIntent, PIC_CROP);
 				} catch (ActivityNotFoundException anfe) {
-
+                    Log.d(TAG, anfe.toString());
 				}
 			}
 		});
@@ -160,9 +160,7 @@ public class GetDownloads extends Activity {
 		if (progressDialog != null && progressDialog.isShowing()) {
 			progressDialog.dismiss();
 		}
-		if (!waiting) {
-			// finish();
-		}
+
 	}
 
 	public void onDestroy() {
@@ -170,9 +168,7 @@ public class GetDownloads extends Activity {
 		if (progressDialog != null && progressDialog.isShowing()) {
 			progressDialog.dismiss();
 		}
-		if (!waiting) {
-			// finish();
-		}
+
 	}
 
 	class LongOperation extends AsyncTask<String, String, String> {
@@ -219,7 +215,7 @@ public class GetDownloads extends Activity {
 					e.printStackTrace();
 				}
 
-				publishProgress("" + (int) (index * 100) / fileArray.size());
+				publishProgress("" + index * 100 / fileArray.size());
 
 			}
 

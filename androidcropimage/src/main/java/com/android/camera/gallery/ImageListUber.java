@@ -118,7 +118,7 @@ public class ImageListUber implements IImageList {
         for (int i = 0, n = mSkipListSize; i < n; ++i) {
             long v = mSkipList[i];
 
-            int offset = (int) (v & 0xFFFFFFFF);
+            int offset = (int) (v);
             int which  = (int) (v >> 32);
             if (skipCount + offset > index) {
                 int subindex = mSkipCounts[which] + (index - skipCount);
@@ -176,7 +176,7 @@ public class ImageListUber implements IImageList {
         int skipCount = 0;
         for (int i = 0, n = mSkipListSize; i < n; i++) {
             long v = mSkipList[i];
-            int offset = (int) (v & 0xFFFFFFFF);
+            int offset = (int) (v);
             if (skipCount + offset > index) {
                 mSkipList[i] = v - 1;
                 break;
@@ -200,8 +200,7 @@ public class ImageListUber implements IImageList {
 
     public boolean removeImageAt(int index) {
         IImage image = getImageAt(index);
-        if (image == null) return false;
-        return removeImage(image, index);
+        return image != null && removeImage(image, index);
     }
 
     public synchronized int getImageIndex(IImage image) {
@@ -216,7 +215,7 @@ public class ImageListUber implements IImageList {
         int skipCount = 0;
         for (int i = 0, n = mSkipListSize; i < n; ++i) {
             long value = mSkipList[i];
-            int offset = (int) (value & 0xFFFFFFFF);
+            int offset = (int) (value);
             int which  = (int) (value >> 32);
             if (which == listIndex) {
                 if (listOffset < offset) {
@@ -288,8 +287,8 @@ public class ImageListUber implements IImageList {
     }
 
     public void close() {
-        for (int i = 0, n = mSubList.length; i < n; ++i) {
-            mSubList[i].close();
+        for (IImageList aMSubList : mSubList) {
+            aMSubList.close();
         }
     }
 }

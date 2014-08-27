@@ -92,10 +92,10 @@ public class ImageList extends BaseImageList implements IImageList {
 
     @Override
     protected Cursor createCursor() {
-        Cursor c = Media.query(
+        return Media.query(
                 mContentResolver, mBaseUri, IMAGE_PROJECTION,
                 whereClause(), whereClauseArgs(), sortOrder());
-        return c;
+
     }
 
     static final String[] IMAGE_PROJECTION = new String[] {

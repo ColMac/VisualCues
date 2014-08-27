@@ -12,15 +12,13 @@ import android.media.MediaPlayer;
 public class AudioPlayer extends MediaPlayer {
 
 	MediaPlayer player = new MediaPlayer();
-	private DatabaseHelper dbHelper;
-	private String filePath;
+    private String filePath;
 
 	public AudioPlayer(String cueName, Context context) {
-		
-		
 
-		this.dbHelper = new DatabaseHelper(context);
-		this.filePath = this.dbHelper.getAudio(cueName);
+
+        DatabaseHelper dbHelper = new DatabaseHelper(context);
+		this.filePath = dbHelper.getAudio(cueName);
 	}
 
 	public void play() {

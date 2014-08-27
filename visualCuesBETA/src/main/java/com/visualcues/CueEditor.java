@@ -14,6 +14,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -79,11 +80,11 @@ public class CueEditor extends Activity {
 
 		if (getResources().getConfiguration().orientation == 1 /* portrait */) {
 
-			editHolder.setOrientation(1);
+			editHolder.setOrientation(LinearLayout.VERTICAL);
 			orientation = 1;
 
 		} else { /* landscape */
-			editHolder.setOrientation(2);
+			editHolder.setOrientation(LinearLayout.HORIZONTAL);
 			orientation = 2;
 
 		}
@@ -91,11 +92,11 @@ public class CueEditor extends Activity {
 		if (mainIntent.hasExtra("cue_name") && mainIntent.hasExtra("path")) {
 
 			path = mainIntent.getExtras().get("path").toString();
-			cueName = mainIntent.getExtras().getString("cue_name").toString();
+			cueName = mainIntent.getExtras().getString("cue_name");
 			titleText.setText(cueName.toUpperCase());
 
 			image.setImageDrawable(Drawable.createFromPath(path + THUMB_DIR
-					+ cueName + THUMB_END));
+					+ cueName.replaceAll("[^-_.A-Za-z0-9]","") + THUMB_END));
 
 		} else {
 			path = getFilesDir().toString();
@@ -105,7 +106,8 @@ public class CueEditor extends Activity {
 
 		if (path.equals("null") && cueName.equals("null")) {
 
-			if (!titleText.getText().toString().trim().equals("change_this")) {
+            //noinspection StatementWithEmptyBody
+            if (!titleText.getText().toString().trim().equals("change_this")) {
 				// TODO prompt user to set name of cue.
 			}
 
@@ -133,7 +135,7 @@ public class CueEditor extends Activity {
 
 		}
 
-		if (cueName.equals("change_this") && newPhoto == false) {
+		if (cueName.equals("change_this") && !newPhoto) {
 
 			getNewPhoto();
 		}
@@ -243,7 +245,8 @@ public class CueEditor extends Activity {
 								orientation);
 
 				Button del_button = (Button) dial.findViewById(0);
-				Button cancel_button = (Button) dial.findViewById(1);
+				@SuppressWarnings("ResourceType") Button cancel_button = (Button) dial.findViewById(1);
+
 				del_button.setText("Confirm Delete");
 				cancel_button.setText("Cancel");
 				dial.show();
@@ -321,13 +324,16 @@ public class CueEditor extends Activity {
 	private boolean changeCueName(Editable newName) {
 
 		String oldName = cueName;
-		Editable toName = newName;
 
-		File oldImage = new File(getFilesDir() + IMG_DIR + oldName + IMG_TYPE);
-		File oldThumb = new File(getFilesDir() + THUMB_DIR + oldName
+        String safeFileName = newName.toString().replaceAll("[^-_.A-Za-z0-9]", "");
+
+        Log.d(TAG, safeFileName);
+
+		File oldImage = new File(getFilesDir() + IMG_DIR + oldName.replaceAll("[^-_.A-Za-z0-9]", "") + IMG_TYPE);
+		File oldThumb = new File(getFilesDir() + THUMB_DIR + oldName.replaceAll("[^-_.A-Za-z0-9]", "")
 				+ THUMB_END);
-		File newImage = new File(getFilesDir() + IMG_DIR + toName + IMG_TYPE);
-		File newThumb = new File(getFilesDir() + THUMB_DIR + toName + THUMB_END);
+		File newImage = new File(getFilesDir() + IMG_DIR + safeFileName + IMG_TYPE);
+		File newThumb = new File(getFilesDir() + THUMB_DIR + safeFileName + THUMB_END);
 
 		if (!newImage.exists() && !newThumb.exists()) {
 
@@ -335,31 +341,31 @@ public class CueEditor extends Activity {
 
 			oldThumb.renameTo(newThumb);
 
-			int id = dbHelper.getCueId(oldName.toString());
+			int id = dbHelper.getCueId(oldName);
 
 			if (id == -1) {
 
 				ContentValues cv = new ContentValues();
-				cv.put("cue_name", toName.toString());
+				cv.put("cue_name", newName.toString());
 				cv.put("image_location", newImage.toString());
 				cv.put("thumbnail_location", newThumb.toString());
 				cv.put("audio_location", "EMPTY");
-				cv.put("text_display", toName.toString().toUpperCase());
+				cv.put("text_display", newName.toString().toUpperCase());
 				cv.put("category", "EMPTY");
 				return dbHelper.insertNewCue(cv);
 
 			} else {
 
 				ContentValues cv = new ContentValues();
-				cv.put("cue_name", toName.toString());
+				cv.put("cue_name", newName.toString());
 				cv.put("image_location", newImage.toString());
 				cv.put("thumbnail_location", newThumb.toString());
-				cv.put("text_display", toName.toString().toUpperCase());
+				cv.put("text_display", newName.toString().toUpperCase());
 
 				if (dbHelper.updateRow(cv, id)) {
 					final Dialog dialog = utils.buildConfirmDialog(tContext,
 							"Success", "Successfuly changed Cue name to: "
-									+ toName.toString().toUpperCase(), 1,
+									+ newName.toString().toUpperCase(), 1,
 									orientation);
 					dialog.show();
 
@@ -374,7 +380,7 @@ public class CueEditor extends Activity {
 						}
 
 					});
-					cueName = toName.toString();
+					cueName = newName.toString();
 					return true;
 				} else {
 					final Dialog dialog = utils.buildConfirmDialog(tContext,
@@ -404,7 +410,7 @@ public class CueEditor extends Activity {
 							tContext,
 							"Failure",
 							"Sorry the name "
-									+ toName.toString()
+									+ newName.toString()
 									+ " is already taken, please try again. If you would like to change the cue with that name return to the main screen then press and hold the cue.",
 									1, orientation);
 			dialog.show();
@@ -443,9 +449,9 @@ public class CueEditor extends Activity {
 						3, orientation);
 		Button fromCamera = (Button) dialog.findViewById(0);
 		fromCamera.setText("Camera");
-		Button fromDownloads = (Button) dialog.findViewById(1);
+		@SuppressWarnings("ResourceType") Button fromDownloads = (Button) dialog.findViewById(1);
 		fromDownloads.setText("Downloads");
-		Button cancel = (Button) dialog.findViewById(2);
+		@SuppressWarnings("ResourceType") Button cancel = (Button) dialog.findViewById(2);
 		cancel.setText("Cancel");
 		dialog.show();
 		fromCamera.setOnClickListener(new OnClickListener() {
@@ -453,7 +459,7 @@ public class CueEditor extends Activity {
 			@Override
 			public void onClick(View v) {
 				Intent takePhoto = new Intent(tContext, CameraManager.class);
-				takePhoto.putExtra("file_name", cueName.toLowerCase().trim());
+				takePhoto.putExtra("file_name", cueName.toLowerCase().trim().replaceAll("[^-_.A-Za-z0-9]", ""));
 				startActivityForResult(takePhoto, 3);
 				dialog.dismiss();
 
@@ -469,7 +475,7 @@ public class CueEditor extends Activity {
 
 				Intent getDownloads = new Intent(tContext, GetDownloads.class);
 				getDownloads
-				.putExtra("file_name", cueName.toLowerCase().trim());
+				.putExtra("file_name", cueName.toLowerCase().trim().replaceAll("[^-_.A-Za-z0-9]", ""));
 				startActivityForResult(getDownloads, 0);
 
 			}
@@ -500,7 +506,7 @@ public class CueEditor extends Activity {
 						Uri.fromFile(new File(path
 								+ IMG_DIR
 								+ titleText.getText().toString().trim()
-								.toLowerCase() + IMG_TYPE)),
+								.toLowerCase().replaceAll("[^-_.A-Za-z0-9]", "") + IMG_TYPE)),
 								CueEditor.this);
 				startActivityForResult(cropIntent, 1);
 			}
@@ -512,7 +518,7 @@ public class CueEditor extends Activity {
 				Bundle extras = data.getExtras();
 				Bitmap cropped = extras.getParcelable("data");
 				utils.finalizeImage(cropped, CueEditor.this, titleText
-						.getText().toString().trim().toLowerCase());
+						.getText().toString().trim().toLowerCase().replaceAll("[^-_.A-Za-z0-9]", ""));
 
 				newPhoto = true;
 
@@ -521,7 +527,7 @@ public class CueEditor extends Activity {
 					getNameDialog();
 				}
 				image.setImageDrawable(Drawable.createFromPath(path + THUMB_DIR
-						+ titleText.getText().toString().trim().toLowerCase()
+						+ titleText.getText().toString().trim().toLowerCase().replaceAll("[^-_.A-Za-z0-9]", "")
 						+ THUMB_END));
 				cueName = titleText.getText().toString();
 
@@ -542,7 +548,7 @@ public class CueEditor extends Activity {
 		case 0: {
 			if (resultCode == RESULT_OK) {
 				image.setImageDrawable(Drawable.createFromPath(path + THUMB_DIR
-						+ titleText.getText().toString().trim().toLowerCase()
+						+ titleText.getText().toString().trim().toLowerCase().replaceAll("[^-_.A-Za-z0-9]", "")
 						+ THUMB_END));
 				cueName = titleText.getText().toString();
 
@@ -579,10 +585,10 @@ public class CueEditor extends Activity {
 
 		if (newConfig.orientation == 1 /* Portrait */) {
 
-			editHolder.setOrientation(1);
+			editHolder.setOrientation(LinearLayout.VERTICAL);
 			orientation = 1;
 		} else if (newConfig.orientation == 2 /* landscape */) {
-			editHolder.setOrientation(2);
+			editHolder.setOrientation(LinearLayout.HORIZONTAL);
 			orientation = 2;
 		}
 		super.onConfigurationChanged(newConfig);

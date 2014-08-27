@@ -24,7 +24,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.ExifInterface;
 import android.net.Uri;
-import android.provider.BaseColumns;
 import android.provider.MediaStore.Images;
 import android.provider.MediaStore.Images.ImageColumns;
 import android.util.Log;
@@ -143,12 +142,12 @@ public class Image extends BaseImage implements IImage {
         return true;
     }
 
-    private static final String[] THUMB_PROJECTION = new String[] {
+    /*private static final String[] THUMB_PROJECTION = new String[] {
         BaseColumns._ID,
-    };
+    }; TODO removed for test purposes.*/
 
     public Bitmap thumbBitmap(boolean rotateAsNeeded) {
-        Bitmap bitmap = null;
+        Bitmap bitmap;
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inDither = false;
         options.inPreferredConfig = Bitmap.Config.ARGB_8888;

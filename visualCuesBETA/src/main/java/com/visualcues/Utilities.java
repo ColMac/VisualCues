@@ -46,7 +46,7 @@ public class Utilities {
 	/**
 	 * Gets actual screen dimensions.
 	 * 
-	 * @param ctx
+	 * @param context
 	 * @return Returns a Point include width and height of screen.
 	 */
 	public Point getScreenSize(Context context) {
@@ -63,11 +63,11 @@ public class Utilities {
 			Context context, boolean roundCorners) {
 
 		DatabaseHelper dbHelper = new DatabaseHelper(context);
-		Boolean result = false;
+		Boolean result;
 
 		Bitmap scaled = Bitmap.createScaledBitmap(bitmap, 300, 300, false);
-		Bitmap bmpThumb = null;
-		Bitmap rounded = null;
+		Bitmap bmpThumb;
+		Bitmap rounded;
 		if (roundCorners) {
 			bmpThumb = getRoundedCornerBitmap(scaled, 55);
 			rounded = getRoundedCornerBitmap(bitmap, 55);
@@ -141,7 +141,7 @@ public class Utilities {
 		dialog.setContentView(R.layout.customdialog);
 		if (orientation == 1) {
 			LinearLayout ll = (LinearLayout)dialog.findViewById(R.id.button_layout);
-			ll.setOrientation(1);
+			ll.setOrientation(LinearLayout.VERTICAL);
 		}
 		TextView tv = (TextView) dialog.findViewById(R.id.text);
 		LinearLayout ll = (LinearLayout) dialog
@@ -175,7 +175,7 @@ public class Utilities {
 			String cueName, Boolean doText) {
 
 		Utilities utils = new Utilities(context);
-		Bitmap b = null;
+		Bitmap b;
 		int max_size = utils.getScreenSize(context).x;
 		int IMAGE_MAX_SIZE = (max_size) / 5;
 
@@ -200,10 +200,9 @@ public class Utilities {
 		o2.inSampleSize = scale;
 
 		b = BitmapFactory.decodeFile(path, o2);
-		Bitmap image = Bitmap.createScaledBitmap(b, IMAGE_MAX_SIZE,
-				IMAGE_MAX_SIZE, true);
 
-		return image;
+		return Bitmap.createScaledBitmap(b, IMAGE_MAX_SIZE,
+				IMAGE_MAX_SIZE, true);
 
 	}
 
@@ -240,7 +239,7 @@ public class Utilities {
 	}
 
 	public Intent performCrop(Uri picUri, Context context) {
-		Intent cropIntent = null;
+		Intent cropIntent;
 
 		cropIntent = new Intent(context, com.android.camera.CropImage.class);
 

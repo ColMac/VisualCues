@@ -5,9 +5,11 @@ import java.io.File;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.database.sqlite.SQLiteQueryBuilder;
+import android.util.Log;
 
 class DatabaseHelper extends SQLiteOpenHelper {
 	static final String TAG = "DatabaseHelper";
@@ -15,9 +17,8 @@ class DatabaseHelper extends SQLiteOpenHelper {
 	static final int DATABASE_VERSION = 1;
 	static final String CUE_TABLE = "cues";
 	private File largeImage;
-	private Cursor cs;
 
-	SQLiteDatabase db;
+    SQLiteDatabase db;
 
 	DatabaseHelper(Context context) {
 		super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -50,20 +51,14 @@ class DatabaseHelper extends SQLiteOpenHelper {
 		
 		Long rowid = db.insert(CUE_TABLE, "", values);
 
-		if (rowid < 0) {
-			
-			return false;
-		} else {
-			
-			return true;
-		}
+        return rowid >= 0;
 	}
 
 	public int getCueId(String cueName) {
 
 		db = getWritableDatabase();
 		Cursor c = db.rawQuery("SELECT id FROM " + CUE_TABLE
-				+ " WHERE cue_name = '" + cueName + "'", null);
+				+ " WHERE cue_name =" + DatabaseUtils.sqlEscapeString(cueName), null);
 
 		int id;
 
@@ -106,17 +101,13 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
 	public Boolean setImageFile(int id, String largeImg, String thumb) {
 
-		if ((db.rawQuery(
-				"UPDATE " + CUE_TABLE + " SET image_location='" + largeImg
-						+ "'" + " WHERE id= " + id, null).getCount() == 1)
-				&& (db.rawQuery(
-						"UPDATE " + CUE_TABLE + " SET thumbnail_location='"
-								+ "'" + thumb + " WHERE id= " + id, null)
-						.getCount() == 1)) {
-			return true;
-		} else {
-			return false;
-		}
+        return (db.rawQuery(
+                "UPDATE " + CUE_TABLE + " SET image_location='" + largeImg
+                        + "'" + " WHERE id= " + id, null).getCount() == 1)
+                && (db.rawQuery(
+                "UPDATE " + CUE_TABLE + " SET thumbnail_location='"
+                        + "'" + thumb + " WHERE id= " + id, null)
+                .getCount() == 1);
 	}
 
 	public String getAudio(String cueName) {
@@ -131,7 +122,7 @@ class DatabaseHelper extends SQLiteOpenHelper {
 	public String getText(String thumbnail) {
 
 		db = getWritableDatabase();
-		String result = null;
+		String result;
 		Cursor c = db.rawQuery("SELECT text_display FROM " + CUE_TABLE
 				+ " WHERE thumbnail_location='" + thumbnail + "'", null);
 		if (c.getCount() > 0) {
@@ -148,8 +139,9 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
 	public String getCategory(String cue) {
 
+        Log.d(TAG, DatabaseUtils.sqlEscapeString(cue));
 		Cursor c = db.rawQuery("SELECT category FROM " + CUE_TABLE
-				+ " WHERE cue_name='" + cue + "'", null);
+				+ " WHERE cue_name=" + DatabaseUtils.sqlEscapeString(cue), null);
 		c.moveToFirst();
 		return c.getString(0);
 	}
@@ -159,14 +151,14 @@ class DatabaseHelper extends SQLiteOpenHelper {
 		switch (id_type) {
 		case 1:
 
-			cs = db.rawQuery("SELECT image_location FROM " + CUE_TABLE
-					+ " WHERE cue_name='" + match + "'", null);
+            Cursor cs = db.rawQuery("SELECT image_location FROM " + CUE_TABLE
+                    + " WHERE cue_name=" + DatabaseUtils.sqlEscapeString(match), null);
 			cs.moveToFirst();
 			largeImage = new File(cs.getString(0));
 			break;
 		case 2:
 			cs = db.rawQuery("SELECT image_location FROM " + CUE_TABLE
-					+ " WHERE thumbnail_location='" + match + "'", null);
+					+ " WHERE thumbnail_location=" + DatabaseUtils.sqlEscapeString(match), null);
 			cs.moveToFirst();
 			largeImage = new File(cs.getString(0));
 
@@ -182,19 +174,14 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
 		String where = "id=" + id;
 
-		if (db.update(CUE_TABLE, cv, where, null) == 1) {
-			return true;
-		} else {
-			return false;
-		}
+        return db.update(CUE_TABLE, cv, where, null) == 1;
 	}
 
 	public File[] getFilesList(String cueName) {
 		Cursor c = db
 				.rawQuery(
 						"SELECT image_location, thumbnail_location, audio_location FROM "
-								+ CUE_TABLE + " WHERE cue_name='" + cueName
-								+ "'", null);
+								+ CUE_TABLE + " WHERE cue_name=" + DatabaseUtils.sqlEscapeString(cueName), null);
 		c.moveToFirst();
 		File[] list = { new File(c.getString(0)), new File(c.getString(1)),
 				new File(c.getString(2)) };
@@ -205,6 +192,6 @@ class DatabaseHelper extends SQLiteOpenHelper {
 
 	public boolean deleteCue(String cueName) {
 
-		return db.delete(CUE_TABLE, "cue_name ='" + cueName + "'", null) > 0;
+		return db.delete(CUE_TABLE, "cue_name =" + DatabaseUtils.sqlEscapeString(cueName), null) > 0;
 	}
 }

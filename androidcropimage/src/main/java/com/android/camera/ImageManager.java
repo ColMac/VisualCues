@@ -121,7 +121,7 @@ public class ImageManager {
     public static enum DataLocation { NONE, INTERNAL, EXTERNAL, ALL }
 
     // Inclusion
-    public static final int INCLUDE_IMAGES = (1 << 0);
+    public static final int INCLUDE_IMAGES = (1);
     public static final int INCLUDE_DRM_IMAGES = (1 << 1);
     public static final int INCLUDE_VIDEOS = (1 << 2);
 
@@ -323,13 +323,13 @@ public class ImageManager {
         }
 
         if (l.size() == 1) {
-            BaseImageList list = l.get(0);
-            return list;
+            return l.get(0);
+
         }
 
-        ImageListUber uber = new ImageListUber(
+        return new ImageListUber(
                 l.toArray(new IImageList[l.size()]), sort);
-        return uber;
+
     }
 
     // This is a convenience function to create an image list from a Uri.
@@ -350,7 +350,7 @@ public class ImageManager {
         } else if (isSingleImageMode(uriString)) {
             return makeSingleImageList(cr, uri);
         } else {
-            String bucketId = uri.getQueryParameter("bucketId");
+            String bucketId = uri != null ? uri.getQueryParameter("bucketId") : null;
             return makeImageList(cr, DataLocation.ALL, INCLUDE_IMAGES, sort,
                     bucketId);
         }
@@ -473,12 +473,7 @@ public class ImageManager {
         String state = Environment.getExternalStorageState();
 
         if (Environment.MEDIA_MOUNTED.equals(state)) {
-            if (requireWriteAccess) {
-                boolean writable = checkFsWritable();
-                return writable;
-            } else {
-                return true;
-            }
+            return !requireWriteAccess || checkFsWritable();
         } else if (!requireWriteAccess
                 && Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
             return true;

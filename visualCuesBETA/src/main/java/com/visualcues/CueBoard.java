@@ -14,6 +14,7 @@ import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.speech.tts.TextToSpeech.OnInitListener;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -32,9 +33,8 @@ public class CueBoard extends Activity implements OnInitListener {
 	private LinearLayout ll;
 	private ArrayList<String> cueNames;
 	private DatabaseHelper dbHelper;
-	private TextView tv;
-	private AudioPlayer ap = null;
-	@SuppressWarnings("unused")
+    private AudioPlayer ap = null;
+	@SuppressWarnings({"unused", "FieldCanBeLocal"})
 	private final String TAG = "CueBoard ";
 	private static TextToSpeech textToSpeech = null;
 	private SensorManager mSensorManager;
@@ -61,9 +61,8 @@ public class CueBoard extends Activity implements OnInitListener {
 		textToSpeech = null;
 		ll.removeAllViews();
 
-		if (textToSpeech == null) {
-			textToSpeech = new TextToSpeech(this, this);
-		}
+		textToSpeech = new TextToSpeech(this, this);
+
 		Intent mainIntent = getIntent();
 
 		cueNames = mainIntent.getStringArrayListExtra("cue_names");
@@ -110,8 +109,6 @@ public class CueBoard extends Activity implements OnInitListener {
 							shuffledNames.add(cueNames.get(2));
 							shuffledNames.add(cueNames.get(0));
 							shuffledNames.add(cueNames.get(1));
-						} else {
-							// do nothing.
 						}
 
 						cueNames = shuffledNames;
@@ -168,16 +165,15 @@ public class CueBoard extends Activity implements OnInitListener {
 
 		readyChoices = makeButtonArray(count, fList);
 
-		for (int index = 0; index < readyChoices.size(); index++) {
-			ImageButton imgButton = readyChoices.get(index);
-			imgButton.setAdjustViewBounds(true);
-			imgButton.setScaleType(ScaleType.CENTER_INSIDE);
-			imgButton.setLayoutParams(new TableLayout.LayoutParams(
-					LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 1f));
-			imgButton.setBackgroundColor(Color.BLACK);
+        for (ImageButton imgButton : readyChoices) {
+            imgButton.setAdjustViewBounds(true);
+            imgButton.setScaleType(ScaleType.CENTER_INSIDE);
+            imgButton.setLayoutParams(new TableLayout.LayoutParams(
+                    LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, 1f));
+            imgButton.setBackgroundColor(Color.BLACK);
 
-			ll.addView(imgButton); // add ImageButtons to view.
-		}
+            ll.addView(imgButton); // add ImageButtons to view.
+        }
 
 		for (int index = 0; index < readyChoices.size(); index++) {
 			readyChoices.get(index).setOnClickListener(new OnClickListener() {
@@ -186,12 +182,12 @@ public class CueBoard extends Activity implements OnInitListener {
 				public void onClick(View view) {
 
 					choiceMade(fList, cueNames, view.getId());
-					for (int index = 0; index < readyChoices.size(); index++) {
-						if (readyChoices.get(index).getId() != view.getId()) {
-							readyChoices.get(index).setVisibility(
-									ImageButton.GONE);
-						}
-					}
+                    for (ImageButton readyChoice : readyChoices) {
+                        if (readyChoice.getId() != view.getId()) {
+                            readyChoice.setVisibility(
+                                    ImageButton.GONE);
+                        }
+                    }
 
 				}
 
@@ -211,7 +207,7 @@ public class CueBoard extends Activity implements OnInitListener {
 			int location) {
 
 		int textSize = (utils.getScreenSize(this).x / 2);
-		tv = new TextView(this);
+        TextView tv = new TextView(this);
 
 		tv.setText(cues.get(location).toUpperCase());
 		ll.setGravity(Gravity.CENTER_VERTICAL);
@@ -235,19 +231,19 @@ public class CueBoard extends Activity implements OnInitListener {
 			try {
 				ap.play();
 			} catch (IllegalStateException e) {
-
+                Log.d(TAG, e.toString());
 			}
 
 		} else {
 
-			if (textToSpeech == null) {
+			if (textToSpeech != null) {
 
 				textToSpeech.setSpeechRate((float) 0.85);
 				textToSpeech.setPitch((float) 0.1);
 
 			}
 
-			if (!textToSpeech.isSpeaking()) {
+			if (!(textToSpeech != null ? textToSpeech.isSpeaking() : false)) {
 
 				String verb = "I chose ";
 				String category = dbHelper.getCategory(cues.get(location));

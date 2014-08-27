@@ -122,7 +122,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/build_choices" />
+                        android:text="@string/build_choices"
+                        tools:ignore="ButtonStyle" />
 
                     <Button
                         android:id="@+id/clear_choices"

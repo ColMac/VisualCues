@@ -91,9 +91,9 @@ class UriImage implements IImage {
             boolean rotateAsNeeded, boolean useNative) {
         try {
             ParcelFileDescriptor pfdInput = getPFD();
-            Bitmap b = Util.makeBitmap(minSideLength, maxNumberOfPixels,
+            return Util.makeBitmap(minSideLength, maxNumberOfPixels,
                     pfdInput, useNative);
-            return b;
+
         } catch (Exception ex) {
             Log.e(TAG, "got exception decoding bitmap ", ex);
             return null;

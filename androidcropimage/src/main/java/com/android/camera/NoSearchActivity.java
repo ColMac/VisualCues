@@ -16,8 +16,10 @@
 
 package com.android.camera;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 
+@SuppressLint("Registered")
 public class NoSearchActivity extends Activity {
     @Override
     public boolean onSearchRequested() {

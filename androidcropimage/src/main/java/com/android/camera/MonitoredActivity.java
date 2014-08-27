@@ -16,16 +16,18 @@
 
 package com.android.camera;
 
-import android.app.Activity;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import java.util.ArrayList;
 
+@SuppressLint("Registered")
 public class MonitoredActivity extends NoSearchActivity {
 
     private final ArrayList<LifeCycleListener> mListeners =
             new ArrayList<LifeCycleListener>();
 
+    @SuppressWarnings("EmptyMethod")
     public static interface LifeCycleListener {
         public void onActivityCreated(MonitoredActivity activity);
         public void onActivityDestroyed(MonitoredActivity activity);

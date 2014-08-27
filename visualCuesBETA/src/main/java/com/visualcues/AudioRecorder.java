@@ -18,7 +18,8 @@ public class AudioRecorder extends MediaRecorder {
 	private String fName = null;
 	private final String subDIR = "/vq_audio/";
 	private DatabaseHelper dbHelper;
-	private final String TAG = "AudioRecorder ";
+	@SuppressWarnings("FieldCanBeLocal")
+    private final String TAG = "AudioRecorder ";
 	private String cueName;
 
 	/**
