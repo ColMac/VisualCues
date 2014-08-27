@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/VisualCues.iml" filepath="$PROJECT_DIR$/VisualCues.iml" />
+      <module fileurl="file://$PROJECT_DIR$/androidcropimage/androidcropimage.iml" filepath="$PROJECT_DIR$/androidcropimage/androidcropimage.iml" />
+      <module fileurl="file://$PROJECT_DIR$/visualCuesBETA/visualCuesBETA.iml" filepath="$PROJECT_DIR$/visualCuesBETA/visualCuesBETA.iml" />
+    </modules>
+  </component>
+</project>
+

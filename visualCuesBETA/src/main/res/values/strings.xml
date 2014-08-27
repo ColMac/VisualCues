@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Visual Cues</string>
+    <string name="category_prompt">Choose Category</string>
+    <string-array name="category_arrays">
+        <item>People</item>
+        <item>Places</item>
+        <item>Things</item>
+    </string-array>
+    <string name="add_cue_prompt">To add a new cue, first click the image on the left then follow the prompt to add a new Image. You will then be sent to the cue configuration screen.</string>
+    <string name="no_images">\tWelcome to VisualCues, to get started press Add Cue on your left to add a new cue from either the camera, or downloads directory.\n\n\n\tIf you would like to use images from outside the application, first email them to yourself then download them from your email. They will then be available in the downloads gallery which can be accessed from the Add Cue button.\n\n\tHope you enjoy.</string>
+    <string name="edit_prompt">Press and hold a cue to change its settings.</string>
+    <string name="logo">VC_Logo</string>
+    <string name="add_cue">Add Cue</string>
+    <string name="category_header">Category</string>
+    <string name="base_directions">Select from one to three Cues.</string>
+    <string name="build_choices">Build Choices</string>
+    <string name="clear_choices">Clear Choices</string>
+</resources>

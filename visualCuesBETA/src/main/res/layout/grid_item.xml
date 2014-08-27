@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent" >
+
+    <ImageView
+        android:id="@+id/thumbImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:clickable="false"
+        android:adjustViewBounds="true"
+        android:focusable="false" />
+
+    <ImageView
+        android:id="@+id/thumbOverlay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/thumbImage"
+        android:layout_alignBottom="@+id/thumbImage"
+        android:layout_centerInParent="true"
+        android:clickable="false"
+        android:adjustViewBounds="true"
+        android:focusable="false"
+        android:scaleType="fitXY"
+        />
+
+    <TextView
+        android:id="@+id/cue_caption"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal|bottom"
+        android:layout_alignParentBottom="true"
+        android:shadowColor="#000000"
+        android:shadowRadius="20"
+        android:shadowDx="5"
+        android:shadowDy="5"
+        android:text=""
+        android:textAppearance="?android:attr/textAppearanceMedium" />
+
+</RelativeLayout>
