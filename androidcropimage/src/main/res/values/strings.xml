@@ -1,5 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2007 The Android Open Source Project
+<?xml version="1.0" encoding="utf-8"?><!-- Copyright (C) 2007 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -62,7 +61,7 @@
     <!-- alert to the user to that the shared storage is too full to complete the operation [CHAR LIMIT=NONE] -->
     <!--<string name="not_enough_space" product="nosdcard">Your shared storage is full.</string> -->
     <!-- alert to the user to that the SD card is too full to complete the operation -->
-     <string name="not_enough_space" product="default">Your SD card is full.</string>
+    <string name="not_enough_space" product="default">Your SD card is full.</string>
 
     <!-- alert to the user to that the shared storage is being disk-checked [CHAR LIMIT=NONE] -->
     <!--<string name="preparing_sd" product="nosdcard">Preparing shared storage\u2026</string> -->
@@ -326,7 +325,7 @@
     <!-- Used to format video duration in Details dialog. hours:minutes:seconds e.g. 0:21:30 -->
     <string name="details_hms"><xliff:g id="hours">%1$d</xliff:g>:<xliff:g id="minutes">%2$02d</xliff:g>:<xliff:g id="seconds">%3$02d</xliff:g></string>
     <!-- Unit of measure in the Details dialog frames per second. e.g. 20 fps -->
-        <string name="details_fps"><xliff:g id="frames" example="30">%1$d</xliff:g> fps</string>
+    <string name="details_fps"><xliff:g id="frames" example="30">%1$d</xliff:g> fps</string>
     <!-- Unit of measure in the Details dialog K bits per second. e.g. 192 Kbps -->
     <string name="details_kbps"><xliff:g id="speed" example="192">%1$d</xliff:g> Kbps</string>
     <!-- Unit of measure in the Details dialog M bits per second. e.g. 2.3 Mbps -->

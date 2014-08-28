@@ -146,15 +146,15 @@ abstract class ImageViewTouchBase extends ImageView {
     // This function changes bitmap, reset base matrix according to the size
     // of the bitmap, and optionally reset the supplementary matrix.
     public void setImageBitmapResetBase(final Bitmap bitmap,
-            final boolean resetSupp) {
+                                        final boolean resetSupp) {
         setImageRotateBitmapResetBase(new RotateBitmap(bitmap), resetSupp);
     }
 
     public void setImageRotateBitmapResetBase(final RotateBitmap bitmap,
-            final boolean resetSupp) {
+                                              final boolean resetSupp) {
         final int viewWidth = getWidth();
 
-        if (viewWidth <= 0)  {
+        if (viewWidth <= 0) {
             mOnLayoutRunnable = new Runnable() {
                 public void run() {
                     setImageRotateBitmapResetBase(bitmap, resetSupp);
@@ -197,7 +197,7 @@ abstract class ImageViewTouchBase extends ImageView {
         m.mapRect(rect);
 
         float height = rect.height();
-        float width  = rect.width();
+        float width = rect.width();
 
         float deltaX = 0, deltaY = 0;
 
@@ -274,7 +274,7 @@ abstract class ImageViewTouchBase extends ImageView {
         matrix.postScale(scale, scale);
 
         matrix.postTranslate(
-                (viewWidth  - w * scale) / 2F,
+                (viewWidth - w * scale) / 2F,
                 (viewHeight - h * scale) / 2F);
     }
 
@@ -298,7 +298,7 @@ abstract class ImageViewTouchBase extends ImageView {
             return 1F;
         }
 
-        float fw = (float) mBitmapDisplayed.getWidth()  / (float) mThisWidth;
+        float fw = (float) mBitmapDisplayed.getWidth() / (float) mThisWidth;
         float fh = (float) mBitmapDisplayed.getHeight() / (float) mThisHeight;
         return Math.max(fw, fh) * 4;
 

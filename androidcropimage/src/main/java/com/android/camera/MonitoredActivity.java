@@ -30,8 +30,11 @@ public class MonitoredActivity extends NoSearchActivity {
     @SuppressWarnings("EmptyMethod")
     public static interface LifeCycleListener {
         public void onActivityCreated(MonitoredActivity activity);
+
         public void onActivityDestroyed(MonitoredActivity activity);
+
         public void onActivityStarted(MonitoredActivity activity);
+
         public void onActivityStopped(MonitoredActivity activity);
     }
 

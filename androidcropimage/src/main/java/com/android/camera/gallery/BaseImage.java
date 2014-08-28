@@ -16,9 +16,6 @@
 
 package com.android.camera.gallery;
 
-import com.android.camera.BitmapManager;
-import com.android.camera.Util;
-
 import android.content.ContentResolver;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -26,6 +23,9 @@ import android.net.Uri;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore.Images;
 import android.util.Log;
+
+import com.android.camera.BitmapManager;
+import com.android.camera.Util;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -58,8 +58,8 @@ public abstract class BaseImage implements IImage {
     private int mHeight = UNKNOWN_LENGTH;
 
     protected BaseImage(BaseImageList container, ContentResolver cr,
-            long id, int index, Uri uri, String dataPath, long miniThumbMagic,
-            String mimeType, long dateTaken, String title, String displayName) {
+                        long id, int index, Uri uri, String dataPath, long miniThumbMagic,
+                        String mimeType, long dateTaken, String title, String displayName) {
         mContainer = container;
         mContentResolver = cr;
         mId = id;
@@ -93,7 +93,7 @@ public abstract class BaseImage implements IImage {
     }
 
     public Bitmap fullSizeBitmap(int minSideLength, int maxNumberOfPixels,
-            boolean rotateAsNeeded, boolean useNative) {
+                                 boolean rotateAsNeeded, boolean useNative) {
         Uri url = mContainer.contentUri(mId);
         if (url == null) return null;
 

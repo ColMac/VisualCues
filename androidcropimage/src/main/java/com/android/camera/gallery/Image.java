@@ -16,8 +16,6 @@
 
 package com.android.camera.gallery;
 
-import com.android.camera.Util;
-
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.graphics.Bitmap;
@@ -27,6 +25,8 @@ import android.net.Uri;
 import android.provider.MediaStore.Images;
 import android.provider.MediaStore.Images.ImageColumns;
 import android.util.Log;
+
+import com.android.camera.Util;
 
 import java.io.IOException;
 
@@ -41,9 +41,9 @@ public class Image extends BaseImage implements IImage {
     private int mRotation;
 
     public Image(BaseImageList container, ContentResolver cr,
-            long id, int index, Uri uri, String dataPath, long miniThumbMagic,
-            String mimeType, long dateTaken, String title, String displayName,
-            int rotation) {
+                 long id, int index, Uri uri, String dataPath, long miniThumbMagic,
+                 String mimeType, long dateTaken, String title, String displayName,
+                 int rotation) {
         super(container, cr, id, index, uri, dataPath, miniThumbMagic,
                 mimeType, dateTaken, title, displayName);
         mRotation = rotation;
@@ -76,6 +76,7 @@ public class Image extends BaseImage implements IImage {
 
     /**
      * Replaces the tag if already there. Otherwise, adds to the exif tags.
+     *
      * @param tag
      * @param value
      */
@@ -132,6 +133,7 @@ public class Image extends BaseImage implements IImage {
 
     /**
      * Save the rotated image by updating the Exif "Orientation" tag.
+     *
      * @param degrees
      */
     public boolean rotateImageBy(int degrees) {
@@ -152,7 +154,7 @@ public class Image extends BaseImage implements IImage {
         options.inDither = false;
         options.inPreferredConfig = Bitmap.Config.ARGB_8888;
         bitmap = Images.Thumbnails.getThumbnail(
-                    mContentResolver, mId, Images.Thumbnails.MINI_KIND, options);
+                mContentResolver, mId, Images.Thumbnails.MINI_KIND, options);
 
         if (bitmap != null && rotateAsNeeded) {
             bitmap = Util.rotate(bitmap, getDegreesRotated());

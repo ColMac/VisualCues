@@ -30,7 +30,9 @@ import android.os.ParcelFileDescriptor;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+
 import com.android.camera.gallery.IImage;
+
 import java.io.Closeable;
 import java.io.FileDescriptor;
 import java.io.IOException;
@@ -91,7 +93,7 @@ public class Util {
      * request is 3. So we round up the sample size to avoid OOM.
      */
     public static int computeSampleSize(BitmapFactory.Options options,
-            int minSideLength, int maxNumOfPixels) {
+                                        int minSideLength, int maxNumOfPixels) {
         int initialSize = computeInitialSampleSize(options, minSideLength,
                 maxNumOfPixels);
 
@@ -109,7 +111,7 @@ public class Util {
     }
 
     private static int computeInitialSampleSize(BitmapFactory.Options options,
-            int minSideLength, int maxNumOfPixels) {
+                                                int minSideLength, int maxNumOfPixels) {
         double w = options.outWidth;
         double h = options.outHeight;
 
@@ -117,7 +119,7 @@ public class Util {
                 (int) Math.ceil(Math.sqrt(w * h / maxNumOfPixels));
         int upperBound = (minSideLength == IImage.UNCONSTRAINED) ? 128 :
                 (int) Math.min(Math.floor(w / minSideLength),
-                Math.floor(h / minSideLength));
+                        Math.floor(h / minSideLength));
 
         if (upperBound < lowerBound) {
             // return the larger one when there is no overlapping zone.
@@ -164,7 +166,7 @@ public class Util {
                     deltaYHalf,
                     deltaXHalf + Math.min(targetWidth, source.getWidth()),
                     deltaYHalf + Math.min(targetHeight, source.getHeight()));
-            int dstX = (targetWidth  - src.width())  / 2;
+            int dstX = (targetWidth - src.width()) / 2;
             int dstY = (targetHeight - src.height()) / 2;
             Rect dst = new Rect(
                     dstX,
@@ -181,7 +183,7 @@ public class Util {
         float bitmapHeightF = source.getHeight();
 
         float bitmapAspect = bitmapWidthF / bitmapHeightF;
-        float viewAspect   = (float) targetWidth / targetHeight;
+        float viewAspect = (float) targetWidth / targetHeight;
 
         if (bitmapAspect > viewAspect) {
             float scale = targetHeight / bitmapHeightF;
@@ -231,7 +233,7 @@ public class Util {
         return b2;
     }
 
-    public static <T>  int indexOf(T [] array, T s) {
+    public static <T> int indexOf(T[] array, T s) {
         for (int i = 0; i < array.length; i++) {
             if (array[i].equals(s)) {
                 return i;
@@ -264,7 +266,7 @@ public class Util {
      * @param uri
      */
     public static Bitmap makeBitmap(int minSideLength, int maxNumOfPixels,
-            Uri uri, ContentResolver cr, boolean useNative) {
+                                    Uri uri, ContentResolver cr, boolean useNative) {
         ParcelFileDescriptor input = null;
         try {
             input = cr.openFileDescriptor(uri, "r");
@@ -282,7 +284,7 @@ public class Util {
     }
 
     public static Bitmap makeBitmap(int minSideLength, int maxNumOfPixels,
-            ParcelFileDescriptor pfd, boolean useNative) {
+                                    ParcelFileDescriptor pfd, boolean useNative) {
         BitmapFactory.Options options = null;
         if (useNative) {
             options = createNativeAllocOptions();
@@ -292,8 +294,8 @@ public class Util {
     }
 
     public static Bitmap makeBitmap(int minSideLength, int maxNumOfPixels,
-            Uri uri, ContentResolver cr, ParcelFileDescriptor pfd,
-            BitmapFactory.Options options) {
+                                    Uri uri, ContentResolver cr, ParcelFileDescriptor pfd,
+                                    BitmapFactory.Options options) {
         try {
             if (pfd == null) pfd = makeInputStream(uri, cr);
             if (pfd == null) return null;
@@ -367,7 +369,7 @@ public class Util {
         };
 
         public BackgroundJob(MonitoredActivity activity, Runnable job,
-                ProgressDialog dialog, Handler handler) {
+                             ProgressDialog dialog, Handler handler) {
             mActivity = activity;
             mDialog = dialog;
             mJob = job;
@@ -404,7 +406,7 @@ public class Util {
     }
 
     public static void startBackgroundJob(MonitoredActivity activity,
-            String title, String message, Runnable job, Handler handler) {
+                                          String title, String message, Runnable job, Handler handler) {
         // Make the progress dialog uncancelable, so that we can gurantee
         // the thread will be done before the activity getting destroyed.
         ProgressDialog dialog = ProgressDialog.show(

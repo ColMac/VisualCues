@@ -28,20 +28,23 @@ import java.util.WeakHashMap;
 
 /**
  * This class provides several utilities to cancel bitmap decoding.
- *
+ * <p/>
  * The function decodeFileDescriptor() is used to decode a bitmap. During
  * decoding if another thread wants to cancel it, it calls the function
  * cancelThreadDecoding() specifying the Thread which is in decoding.
- *
+ * <p/>
  * cancelThreadDecoding() is sticky until allowThreadDecoding() is called.
  */
 public class BitmapManager {
     private static final String TAG = "BitmapManager";
+
     private static enum State {CANCEL, ALLOW}
+
     private static class ThreadStatus {
         public State mState = State.ALLOW;
         public BitmapFactory.Options mOptions;
         public boolean mThumbRequesting;
+
         @Override
         public String toString() {
             String s;
@@ -82,7 +85,7 @@ public class BitmapManager {
      * BitmapFaction.Options used for decoding and cancelling.
      */
     private synchronized void setDecodingOptions(Thread t,
-            BitmapFactory.Options options) {
+                                                 BitmapFactory.Options options) {
         getOrCreateThreadStatus(t).mOptions = options;
     }
 
@@ -132,7 +135,7 @@ public class BitmapManager {
     }
 
     public Bitmap getThumbnail(ContentResolver cr, long origId, int kind,
-            BitmapFactory.Options options, boolean isVideo) {
+                               BitmapFactory.Options options, boolean isVideo) {
         Thread t = Thread.currentThread();
         ThreadStatus status = getOrCreateThreadStatus(t);
 

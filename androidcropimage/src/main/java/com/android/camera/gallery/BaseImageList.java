@@ -16,14 +16,14 @@
 
 package com.android.camera.gallery;
 
-import com.android.camera.ImageManager;
-import com.android.camera.Util;
-
 import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.database.Cursor;
 import android.net.Uri;
 import android.util.Log;
+
+import com.android.camera.ImageManager;
+import com.android.camera.Util;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -47,7 +47,7 @@ public abstract class BaseImageList implements IImageList {
     protected boolean mCursorDeactivated = false;
 
     public BaseImageList(ContentResolver resolver, Uri uri, int sort,
-            String bucketId) {
+                         String bucketId) {
         mSort = sort;
         mBaseUri = uri;
         mBucketId = bucketId;
@@ -225,16 +225,16 @@ public abstract class BaseImageList implements IImageList {
     protected String sortOrder() {
         String ascending =
                 (mSort == ImageManager.SORT_ASCENDING)
-                ? " ASC"
-                : " DESC";
+                        ? " ASC"
+                        : " DESC";
 
         // Use DATE_TAKEN if it's non-null, otherwise use DATE_MODIFIED.
         // DATE_TAKEN is in milliseconds, but DATE_MODIFIED is in seconds.
         String dateExpr =
                 "case ifnull(datetaken,0)" +
-                " when 0 then date_modified*1000" +
-                " else datetaken" +
-                " end";
+                        " when 0 then date_modified*1000" +
+                        " else datetaken" +
+                        " end";
 
         // Add id to the end so that we don't ever get random sorting
         // which could happen, I suppose, if the date values are the same.
